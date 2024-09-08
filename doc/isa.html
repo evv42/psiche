@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>psiche OPCODES (preliminary)</title>
+	<meta charset="UTF-8">
+	<style> <!--
+		table.withborder {
+			border-width: 1px;
+			border-style: solid;
+			border-color: black;
+			border-collapse: collapse;
+		}
+		td.withborder {
+			border-width: 1px;
+			border-style: solid;
+			border-color: black;
+			border-collapse: collapse;
+		}
+		sub {
+			font-size: 8pt;
+		}
+		sup {
+			font-size: 8pt;
+		}
+		hr {
+			height: 1px;
+			color: black;
+		}
+		-->
+		body{
+			background-color: #FFFFFF;
+			color: #000908;
+			font-family: monospace;
+		}
+	</style>
+</head>
+
+<body>
+<h1><b>psiche instruction set</b></h1>
+<table cellspacing="0" cellpadding="0" class="withborder">
+	<tr align="center">
+		<td class="withborder">&nbsp;</td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x0&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x1&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x2&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x3&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x4&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x5&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x6&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x7&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x8&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;x9&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;xA&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;xB&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;xC&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;xD&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;xE&nbsp;</b></td>
+		<td class="withborder" style="width: 7em"><b>&nbsp;xF&nbsp;</b></td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;0x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#ff99cc">NOP<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">LDAD<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ccccff">STAD<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TBD<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TDB<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TXA<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TAX<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TYA<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TAY<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">TBS<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffff99">INA<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">IND<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">DEA<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">DED<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffcc99">RTS<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffff99">SEC<br>1&nbsp;&nbsp;<br>- - C</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;1x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#ffff99">CLC<br>1&nbsp;&nbsp;<br>- - C</td>
+		<td class="withborder" bgcolor="#ffcccc">ROR<br>1&nbsp;&nbsp;<br>N Z C</td>
+		<td class="withborder" bgcolor="#ffcccc">ROL<br>1&nbsp;&nbsp;<br>N Z C</td>
+		<td class="withborder" bgcolor="#ccccff">PHA<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">PLA<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ccccff">PHB<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">PLB<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ccccff">PHD<br>1&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccccff">PLD<br>1&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffcccc">LSR<br>1&nbsp;&nbsp;<br>N Z C</td>
+		<td class="withborder" bgcolor="#ffcccc">ASL<br>1&nbsp;&nbsp;<br>N Z C</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;2x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;3x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>1&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;4x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#ccccff">LDA d8<br>2&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">CMP d8<br>2&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">AND d8<br>2&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">ADC d8<br>2&nbsp;&nbsp;<br>N Z C</td>
+		<td class="withborder" bgcolor="#ffff99">SBC d8<br>2&nbsp;&nbsp;<br>N Z C</td>
+		<td class="withborder" bgcolor="#ffff99">ORA d8<br>2&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffff99">EOR d8<br>2&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;5x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;6x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;7x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;8x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#ffcc99">BCC r8<br>2&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffcc99">BCS r8<br>2&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffcc99">BMI r8<br>2&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffcc99">BPL r8<br>2&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffcc99">BNE r8<br>2&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffcc99">BEQ r8<br>2&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;9x&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;Ax&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;Bx&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>2&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;Cx&nbsp;</b></td>
+		<td class="withborder" bgcolor="#ffcc99">JMP a16<br>3&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ffcc99">JSR a16<br>3&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#ccffcc">LDB d16<br>3&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ccffcc">LDD d16<br>3&nbsp;&nbsp;<br>N Z -</td>
+		<td class="withborder" bgcolor="#ffcc99">JMP (a16)<br>3&nbsp;&nbsp;<br>- - -</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;Dx&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;Ex&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+	</tr>
+	<tr align="center">
+		<td class="withborder"><b>&nbsp;Fx&nbsp;</b></td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+		<td class="withborder" bgcolor="#767676">?<br>3&nbsp;&nbsp;?<br>?</td>
+	</tr>
+</table>
+<br>
+<table cellspacing="0" cellpadding="0" style="font-family: monospace; font-size: 8pt">
+	<tr>
+	<td>
+	<table cellspacing="0" cellpadding="0" style="font-family: monospace; font-size: 8pt">
+		<tr><td bgcolor="#ff99cc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>Misc/control instructions</td></tr>
+		<tr><td bgcolor="#ffcc99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>Jumps/calls</td></tr>
+		<tr><td bgcolor="#ccccff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>8bit load/store/move instructions</td></tr>
+		<tr><td bgcolor="#ccffcc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>16bit load instructions</td></tr>
+		<tr><td bgcolor="#ffff99">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>8bit arithmetic/logical instructions</td></tr>
+		<tr><td bgcolor="#ffcccc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>Rotate/shift instructions</td></tr>
+	</table>
+	</td>
+	<td width="25">&nbsp;</td>
+	<td>
+	<table cellspacing="0" cellpadding="0">
+		<tr align="center">
+			<td align="right">&nbsp;<br>Length in bytes&nbsp;&rarr;<br>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td class="withborder" style="width: 7em">INS reg<br>2&nbsp;&nbsp;<br>N Z C</td>
+			<td>&nbsp;</td>
+			<td align="left">&larr;&nbsp;Instruction mnemonic<br>&larr;&nbsp;Duration in cycles (tbd)<br>&larr;&nbsp;Flags affected</td>
+		</tr>
+	</table>
+	</td>
+	<td width="25">&nbsp;</td>
+	<td width="450">
+	Instructions marked "?" are invalid and will crash the processor.
+	</td>
+	</tr>
+</table>
+<h2><b>Registers</b></h2>
+<table>
+	<tr>
+		<td>
+			<table cellspacing="0" cellpadding="0">
+				<tr><td>
+					<table cellspacing="0" cellpadding="0" class="withborder" bgcolor="#efefef" width="300">
+						<tr align="center"  bgcolor="#bfbfbf">
+							<td class="withborder" width="150">15&nbsp;&nbsp;.&nbsp;.&nbsp;.&nbsp;&nbsp;8</td>
+							<td class="withborder width="150"">7&nbsp;&nbsp;.&nbsp;.&nbsp;.&nbsp;&nbsp;0</td>
+						</tr>
+						<tr align="center">
+							<td class="withborder"></td>
+							<td class="withborder">A (accumulator)</td>
+						</tr>
+						<tr align="center">
+							<td class="withborder">Y</td>
+							<td class="withborder">X</td>
+						</tr>
+					</table>
+				</td><td>
+					<table cellspacing="0" cellpadding="0">
+						<tr><td>&nbsp;</td></tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr><td>&nbsp;&larr;&nbsp;B</td></tr>
+					</table>
+				</td></tr>
+			</table>
+			<br>
+			<table cellspacing="0" cellpadding="0" class="withborder" bgcolor="#efefef" width="300">
+				<tr align="center"  bgcolor="#bfbfbf">
+					<td class="withborder" width="300">15&nbsp;&nbsp;.&nbsp;.&nbsp;.&nbsp;&nbsp;0</td>
+				</tr>
+				<tr align="center">
+					<td class="withborder" width="400">D (data pointer)</td>
+				</tr>
+				<tr align="center">
+					<td class="withborder" width="400">SP (stack pointer)</td>
+				</tr>
+				<tr align="center">
+					<td class="withborder">PC (program counter)</td>
+				</tr>
+			</table>
+		<br><br><br>
+		</td>
+		<td width="50">&nbsp;</td>
+		<td>
+			<b>Program Status (PS) bits:</b><br><br>
+			<table cellspacing="0" cellpadding="0" class="withborder" bgcolor="#efefef" width="200">
+				<tr align="center" bgcolor="#bfbfbf">
+					<td class="withborder" width="25">7</td>
+					<td class="withborder" width="25">6</td>
+					<td class="withborder" width="25">5</td>
+					<td class="withborder" width="25">4</td>
+					<td class="withborder" width="25">3</td>
+					<td class="withborder" width="25">2</td>
+					<td class="withborder" width="25">1</td>
+					<td class="withborder" width="25">0</td>
+				</tr>
+				<tr align="center">
+					<td class="withborder">x</td>
+					<td class="withborder">x</td>
+					<td class="withborder">x</td>
+					<td class="withborder">x</td>
+					<td class="withborder">x</td>
+					<td class="withborder">N</td>
+					<td class="withborder">Z</td>
+					<td class="withborder">C</td>
+				</tr>
+			</table>
+			<br>
+			<span>x</span> - Not Used<br>
+			<span>N</span> - Negative Flag<br>
+			<span>Z</span> - Zero Flag<br>
+			<span>C</span> - Carry Flag<br>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
